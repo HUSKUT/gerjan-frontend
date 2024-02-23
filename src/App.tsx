@@ -17,7 +17,7 @@ function App() {
             <ThemeProvider theme={darkTheme}>
                 <CssBaseline/>
                 <QueryClientProvider client={queryClient}>
-                    <h1>bestellenbijgerjan.nl</h1>
+                    <div style={{ fontSize: '220%', fontWeight: 'bold' }}>bestellenbijgerjan.nl</div>
                     <RestaurantList/>
                 </QueryClientProvider>
             </ThemeProvider>

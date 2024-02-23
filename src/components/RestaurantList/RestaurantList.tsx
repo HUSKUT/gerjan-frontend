@@ -62,7 +62,7 @@ function RestaurantList() {
 
                             if (restaurant.supports.delivery === false && restaurant.shippingInfo.delivery.isOpenForOrder === false) return (<></>)
 
-                            const openingTime = restaurant.shippingInfo.delivery.openingTime ?? '00:00';
+                            const openingTime = restaurant.shippingInfo.delivery.openingTime ?? 'Open!';
                             const openTimeReal = toDate(openingTime, 'h:m');
                             const timeColor = openTimeReal > new Date() ? 'Red' : 'Green';
                             return (
@@ -75,7 +75,7 @@ function RestaurantList() {
                                         </ListItemAvatar>
                                         <ListItemText
                                             sx={{ textDecoration: 'none', color: '#fff' }}
-                                            primary={`${restaurant.brand.name} (${restaurant.rating.score.toString()})`}
+                                            primary={<strong> {restaurant.brand.name} </strong>}
                                             secondary={
                                                 <React.Fragment>
                                                     <Typography
@@ -86,8 +86,12 @@ function RestaurantList() {
                                                     >
                                                         <Typography>Max delivery
                                                             time: {restaurant.shippingInfo.delivery.durationRange.max} minutes</Typography>
+                                                        {openingTime !== 'Open!' &&
                                                         <Typography color={timeColor}>Opens
-                                                            at: {openingTime}</Typography>
+                                                            at: {openingTime}</Typography> }
+                                                        {openingTime === 'Open!' &&
+                                                        <Typography color={timeColor}>Open!</Typography> }
+
                                                     </Typography>
                                                 </React.Fragment>
                                             }/>
