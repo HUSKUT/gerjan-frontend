@@ -1,9 +1,17 @@
-import {Avatar, List, ListItem, ListItemAvatar, ListItemText, Typography, Select, MenuItem, InputLabel} from "@mui/material";
+import {
+  Avatar,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Typography,
+  MenuItem,
+  TextField
+} from "@mui/material";
 import React, { useState, useMemo } from "react";
 import {useQuery} from "@tanstack/react-query";
 
 interface Restaurant {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   brand: any,
   cuisineTypes: string[],
   id: string,
@@ -13,11 +21,8 @@ interface Restaurant {
   popularity: number,
   priceRange: number,
   primarySlug: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rating: any,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   shippingInfo: any,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   supports: any,
 
 }
@@ -49,10 +54,11 @@ function RestaurantList() {
   // Queries
   const {isPending, data: restaurants} = useQuery({queryKey: ['restaurants'], queryFn: listRestaurants});
 
+  // @ts-expect-error
   const filteredRestaurants = useMemo(() => (restaurants || []).filter((restaurant) => restaurant.supports.delivery || restaurant.shippingInfo.delivery), [restaurants]);
   const sortedRestaurants = useMemo(() => (
     filteredRestaurants
-      .sort((a, b) => {
+      .sort((a: { brand: { name: number; }; shippingInfo: { delivery: { openingTime: any; }; }; }, b: { brand: { name: number; }; shippingInfo: { delivery: { openingTime: any; }; }; }) => {
         switch (sort) {
           case 'name':
             return a.brand.name < b.brand.name
@@ -84,17 +90,16 @@ function RestaurantList() {
   }
   return (
     <>
-      <InputLabel id="simple-select-label">Sorteer</InputLabel>
-      <Select
-        labelId="simple-select-label"
+      <TextField
         onChange={(e) => setSort(e.target.value)}
+        select
         value={sort}
         label="Sorteer"
       >
-        <MenuItem value="none">Niet</MenuItem>
+        <MenuItem value="none" disabled={true}>Sorteer</MenuItem>
         <MenuItem value="name">Naam</MenuItem>
         <MenuItem value="opening_time">Openingstijd</MenuItem>
-      </Select>
+      </TextField>
       <List sx={{width: '100%', maxWidth: 500, bgcolor: 'background.paper'}}>
         {
           sortedRestaurants.map((restaurant: Restaurant) => {

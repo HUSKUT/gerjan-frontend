@@ -5,6 +5,10 @@
   text-align: center;
 }
 
+legend {
+  color: white !important;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
